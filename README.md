@@ -44,7 +44,11 @@ A Remoded userscript takes the shape of a single directory in `~/.remoded`. The
 naming goes like this:
 
 ```
-scriptname@author
+examplescriptname    # That's just a generic thing
+example@author       # The code was pulled from @author's GitHub 'example' repo
+gist-12345@author    # The code was pulled from @author's Gist 12345
+
+# Currently, the last two are just a convention, but later on... :) 
 ```
 
 
@@ -57,8 +61,8 @@ simplest form, it goes like this:
 load "script.js"
 ```
 
-All this does is load the file `script.js` into all matching pages (based on the
-dir name). You can load as many files as you want, in the order you specify:
+All this does is load the file `script.js` into all pages. You can load as many
+files as you want, in the order you specify:
 
 ```
 load "lib/jquery.js", "lib/underscore.js"
@@ -72,16 +76,16 @@ But what if we only want to run on a subset of pages?
 
 ```
 match "foo/bar"                 # Exact matching (+/- trailing slash)
-match "*.php"                   # Wildcard matching
+match "*.php"                   # Wildcard matching (Not implemented)
 match /^bar\/?.*(?!\.s?html?)$/ # Regexp
 
-# Also, domains, if you can run on several:
+# Also, domains:
 domain "example.com"
 domain /^(b|a|z)\.example.+$/
 
 # Ports are thrown in for free
 port 8080, 4567
-port "1200..1234"   # Ranges!
+port "1200..1234"   # Ranges! (Not implemented)
 port /^[1-9]+000$/
 ```
 
