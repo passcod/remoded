@@ -71,31 +71,33 @@ load [
 But what if we only want to run on a subset of pages?
 
 ```
-match "foo"
-match "\.php$"
-match "^bar/?.*(?!\.s?html?)$"
+match "foo/bar"                 # Exact matching (+/- trailing slash)
+match "*.php"                   # Wildcard matching
+match /^bar\/?.*(?!\.s?html?)$/ # Regexp
 
 # Also, domains, if you can run on several:
-domain "example\.com$"
-domain "^(b|a|z)\.example.+$"
+domain "example.com"
+domain /^(b|a|z)\.example.+$/
 
 # Ports are thrown in for free
 port 8080, 4567
-port "^[1-9]+000$"
+port "1200..1234"   # Ranges!
+port /^[1-9]+000$/
 ```
 
 What about conditional loading? Well, there's better: scopes.
 
 ```
 scope ->
-  match "^only/these/pages"
-  domain "on\.this\.website"
+  match "only/this/page"
+  domain "on.this.websi.te"
   
   load "special.js"
 ```
 
 The Manifest is actually a CoffeeScript DSL, so you can use functions,
-variables, and the power of a full language to achieve exactly what you want.
+variables, and the full power of the language to achieve exactly what
+you want.
 
 
 _More coming... stay tuned!_
