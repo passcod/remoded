@@ -1,0 +1,15 @@
+load 'dir/file.ext'
+
+load [
+  'file'
+  'file'
+  'file'
+]
+
+load 'file', 'file', 'file'
+
+match "^hello/world"
+domain "example\.com"
+
+scope ->
+  load 'file'
