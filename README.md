@@ -60,45 +60,45 @@ file is a `Manifest`. This file offers all the flexibility you want with zero
 effort. In its simplest form, it goes like this:
 
 ```
-load script.js
+load "script.js"
 ```
 
 All this does is load the file `script.js` into all matching pages (based on the
 dir name). You can load as many files as you want, in the order you specify:
 
 ```
-load lib/jquery.js
-load lib/underscore.js
-load lib/underscore.string.js
-load script.js
+# This is actually a CoffeeScript DSL, so do:
+load "lib/jquery.js", "lib/underscore.js"
+load [
+  "lib/underscore.string.js"
+  "script.js"
+]
 ```
 
 But what if we only want to run on a subset of pages?
 
 ```
-match foo
-match \.php$
-match ^bar/?.*(?!\.s?html?)$
+match "foo"
+match "\.php$"
+match "^bar/?.*(?!\.s?html?)$"
 
 # Also, domains, if you can run on several:
-domain example\.com$
-domain ^(b|a|z)\.example.+$
+domain "example\.com$"
+domain "^(b|a|z)\.example.+$"
 
 # Ports are thrown in for free
-port 8080
-port 4567
-port ^[1-9]+000$
+port 8080, 4567
+port "^[1-9]+000$"
 ```
 
 What about conditional loading? Well, there's better: scopes.
 
 ```
-scope {
-  match ^only/these/pages
-  domain on\.this\.website
+scope ->
+  match "^only/these/pages"
+  domain "on\.this\.website"
   
-  load special.js
-}
+  load "special.js"
 ```
 
 More coming... stay tuned!
