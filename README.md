@@ -44,20 +44,14 @@ A Remoded userscript takes the shape of a single directory in `~/.remoded`. The
 naming goes like this:
 
 ```
-scriptname@example.com/         # This will be loaded on example.com/*
-scriptname@foo.example.com/     # This will be loaded on foo.example.com/*
-scriptname@.example.com/        # This will be loaded on *.example.com/*
-scriptname@global/              # This will be loaded everywhere
+scriptname@author
 ```
 
-The part with the `@` is necessary so multiple userscripts can run on the same
-domain, and be managed separately. You can get rid of it if you're just playing
-around, but I don't recommend it.
 
-Of course, the userscript isn't run based on the single matching of a domain...
-that's were the Manifest comes in. In the userscript directory, the only required
-file is a `Manifest`. This file offers all the flexibility you want with zero
-effort. In its simplest form, it goes like this:
+Of course, the userscript isn't run all the time, on every webpage... that's were
+the Manifest comes in. In the userscript directory, the only required file is a
+`Manifest`. This file offers all the flexibility you want with zero effort. In its
+simplest form, it goes like this:
 
 ```
 load "script.js"
@@ -67,7 +61,6 @@ All this does is load the file `script.js` into all matching pages (based on the
 dir name). You can load as many files as you want, in the order you specify:
 
 ```
-# This is actually a CoffeeScript DSL, so do:
 load "lib/jquery.js", "lib/underscore.js"
 load [
   "lib/underscore.string.js"
@@ -101,7 +94,11 @@ scope ->
   load "special.js"
 ```
 
-More coming... stay tuned!
+The Manifest is actually a CoffeeScript DSL, so you can use functions,
+variables, and the power of a full language to achieve exactly what you want.
+
+
+_More coming... stay tuned!_
 
 
 remoded
