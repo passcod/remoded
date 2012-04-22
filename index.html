@@ -24,7 +24,7 @@
           <li class="fork"><a href="https://github.com/passcod/remoded">Fork On GitHub</a></li>
           <li class="downloads"><a href="#">XPI</a></li>
           <li class="downloads"><a href="#">AMO</a></li>
-          <li class="title">INSTALL (I)</li>
+          <li class="title">INSTALL [I]</li>
         </nav>
       </div><!-- end header -->
 
@@ -36,37 +36,100 @@
           <p>Userscripts, reloaded.</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/passcod">passcod</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages — Theme by <a href="http://twitter.com/#%21/michigangraham">mattgraham</a></span>
         </div>
-        
-        <h2>Actual content coming soon...</h2>
-        
-        <h3>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+        <p>Remoded was originally conceived sometime before Winter 2011, but it
+never really got beyond the idea stage. A little later, I had a look at
+<a href="http://defunkt.io/dotjs/">dotjs</a>, bringing in a refreshing thought of simplicity over the initially
+complex thing I had in mind. Months passed, and finally I believe the
+gestation period is over. <strong>Remoded</strong> is yearning to be born.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h2>Userscripts are tricky beasts</h2>
+
+<p>I <a href="http://checkthis.com/71v0">recently wrote a bit about Userscripts</a> and my impression of the
+community behind them, at least while I was coding a lot in there. I
+complained about the apparent animosity expressed towards « noobs
+» who wanted to use jQuery instead of just pure DOM and Javascript.</p>
+
+<p>Userscripts are somewhere between apps and websites and bookmarklets.
+They have <strong>context</strong>, as in, they run on the web, on top of something
+that exists; they can be <strong>distributed</strong>, made by developers and used by
+people*; they are <strong>varied</strong>... from minor tweaks to completely new UIs.
+When remaking them, then, one needs to consider all of these. It's not easy.</p>
+
+<p>* <em>Not that developers aren't people. Although that's debatable.</em></p>
+
+<h2>One file userscripts are sooo 2010</h2>
+
+<p>I mean, does anyone on the web does any serious work all in one file? OK, there's
+a few, but generally development is done with a variety of files. You might be
+used to concatenating everything in one file for production, but the reason for
+<em>that</em> is about network latency — a problem that isn't one if all your
+files are local. Plus, requiring that all code be in one file means you can't
+use frameworks like <a href="http://jqueryui.com/">jQuery UI</a> or <a href="https://github.com/ibdknox/pinot">Pinot</a>, nor many different libraries
+or plugins, nor images, nor flash if that's your fancy, nor...</p>
+
+<h2>Remoded brings freedom to this twisted plane</h2>
+
+<p>A Remoded userscript takes the shape of a single directory in <code>~/.remoded</code>. The
+naming goes like this:</p>
+
+<pre><code>examplescriptname    # That's just a generic thing
+example@author       # The code was pulled from @author's GitHub 'example' repo
+gist-12345@author    # The code was pulled from @author's Gist 12345
+
+# Currently, the last two are just a convention, but later on... :) 
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Of course, the userscript isn't run all the time, on every webpage... that's were
+the Manifest comes in. In the userscript directory, the only required file is a
+<code>Manifest</code>. This file offers all the flexibility you want with zero effort. In its
+simplest form, it goes like this:</p>
 
-<h3>Designer Templates</h3>
+<pre><code>load "script.js"
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>All this does is load the file <code>script.js</code> into all pages. You can load as many
+files as you want, in the order you specify:</p>
 
-<h3>Rather Drive Stick?</h3>
+<pre><code>load "lib/jquery.js", "lib/underscore.js"
+load [
+  "lib/underscore.string.js"
+  "script.js"
+]
+</code></pre>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>But what if we only want to run on a subset of pages?</p>
 
-<h3>Authors and Contributors</h3>
+<pre><code>match "foo/bar"                 # Exact matching (+/- trailing slash)
+match "*.php"                   # Wildcard matching (Not implemented)
+match /^bar\/?.*(?!\.s?html?)$/ # Regexp
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+# Also, domains:
+domain "example.com"
+domain /^(b|a|z)\.example.+$/
 
-<h3>Support or Contact</h3>
+# Ports are thrown in for free
+port 8080, 4567
+port "1200..1234"   # Ranges! (Not implemented)
+port /^[1-9]+000$/
+</code></pre>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact support@github.com and we’ll help you sort it out.</p>
+<p>What about conditional loading? Well, there's better: scopes.</p>
+
+<pre><code>scope -&gt;
+  match "only/this/page"
+  domain "on.this.websi.te"
+
+  load "special.js"
+</code></pre>
+
+<p>The Manifest is actually a CoffeeScript DSL, so you can use functions,
+variables, and the full power of the language to achieve exactly what
+you want.</p>
+
+<p><em>More coming... stay tuned!</em></p>
       </section>
 
     </div>
