@@ -1,7 +1,7 @@
 jobs = {};
-postback = function (hash, data) {
+postback = function (job, data) {
   self.postMessage({
-    job: hash,
+    job: job,
     data: data
   });
 };
@@ -15,11 +15,11 @@ self.on('message', function (msg) {
     msg = JSON.parse(msg);
   }
   
-  msg.args.push(msg.hash);
-  eval("jobs['"+msg.hash+"'] = "+msg.func+";");
-  var result = jobs[msg.hash].apply({}, msg.args);
+  msg.args.push(msg.job);
+  eval("jobs['"+msg.job+"'] = "+msg.func+";");
+  var result = jobs[msg.job].apply({}, msg.args);
   if (result !== undefined || result !== null) {
-    postback(msg.hash, result);
+    postback(msg.job, result);
   }
 });
-self.postMessage('ready');
+postback('ready');
