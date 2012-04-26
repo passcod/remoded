@@ -7,7 +7,8 @@ postback = function (job, data) {
 };
 
 log = function (data) {
-  postback("log", JSON.stringify(data));
+  postback("log", JSON.stringify(data, null, "  "));
+  return data;
 };
 
 self.on('message', function (msg) {
