@@ -1,30 +1,29 @@
 window.Remoded = (manifest, loc) ->
-  result =
-    scopes: [{
-      # Element zero is the root scope
-      matches: []
-      domains: []
-      ports: []
-      loads: []
-      children: []
-      }]
+  scopes = [{
+    # Element zero is the root scope
+    matches: []
+    domains: []
+    ports: []
+    loads: []
+    children: []
+    }]
 
   
   loc = log parseUri loc
   current_scope = 0
 
-  match  = (expr) -> result.scopes[current_scope].matches.push expr
-  domain = (expr) -> result.scopes[current_scope].domains.push expr 
-  port   = (expr) -> result.scopes[current_scope].ports.push expr
+  match  = (expr) -> scopes[current_scope].matches.push expr
+  domain = (expr) -> scopes[current_scope].domains.push expr 
+  port   = (expr) -> scopes[current_scope].ports.push expr
 
   load = (files) ->
     files = [files] if typeof files is 'string' or typeof files is 'number'
     for file in files
-      result.scopes[current_scope].loads.push file
+      scopes[current_scope].loads.push file
 
   scope = (call) ->
     # Elevate the scope before executing the contents...
-    length = result.scopes.push
+    length = scopes.push
       contents: call
       matches: []
       domains: []
@@ -33,18 +32,18 @@ window.Remoded = (manifest, loc) ->
       children: []
       parent: current_scope
 
-    result.scopes[current_scope].children.push length - 1
+    scopes[current_scope].children.push length - 1
     current_scope = length - 1
 
     call()
 
     # ...and lower it afterwards
-    current_scope = result.scopes[current_scope].parent
+    current_scope = scopes[current_scope].parent
 
 
   eval manifest
 
-  return log result
+  return log scopes
 
 RegExp.prototype.toJSON = -> this.toString()
 Function.prototype.toJSON = -> this.toString()

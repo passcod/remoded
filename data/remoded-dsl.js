@@ -3,28 +3,26 @@
   var parseUri;
 
   window.Remoded = function(manifest, loc) {
-    var current_scope, domain, load, match, port, result, scope;
-    result = {
-      scopes: [
-        {
-          matches: [],
-          domains: [],
-          ports: [],
-          loads: [],
-          children: []
-        }
-      ]
-    };
+    var current_scope, domain, load, match, port, scope, scopes;
+    scopes = [
+      {
+        matches: [],
+        domains: [],
+        ports: [],
+        loads: [],
+        children: []
+      }
+    ];
     loc = log(parseUri(loc));
     current_scope = 0;
     match = function(expr) {
-      return result.scopes[current_scope].matches.push(expr);
+      return scopes[current_scope].matches.push(expr);
     };
     domain = function(expr) {
-      return result.scopes[current_scope].domains.push(expr);
+      return scopes[current_scope].domains.push(expr);
     };
     port = function(expr) {
-      return result.scopes[current_scope].ports.push(expr);
+      return scopes[current_scope].ports.push(expr);
     };
     load = function(files) {
       var file, _i, _len, _results;
@@ -34,13 +32,13 @@
       _results = [];
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
-        _results.push(result.scopes[current_scope].loads.push(file));
+        _results.push(scopes[current_scope].loads.push(file));
       }
       return _results;
     };
     scope = function(call) {
       var length;
-      length = result.scopes.push({
+      length = scopes.push({
         contents: call,
         matches: [],
         domains: [],
@@ -49,13 +47,13 @@
         children: [],
         parent: current_scope
       });
-      result.scopes[current_scope].children.push(length - 1);
+      scopes[current_scope].children.push(length - 1);
       current_scope = length - 1;
       call();
-      return current_scope = result.scopes[current_scope].parent;
+      return current_scope = scopes[current_scope].parent;
     };
     eval(manifest);
-    return log(result);
+    return log(scopes);
   };
 
   RegExp.prototype.toJSON = function() {
