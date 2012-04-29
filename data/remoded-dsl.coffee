@@ -10,7 +10,7 @@ window.Remoded = (manifest, loc) ->
       }]
 
   
-  loc = parseUri loc
+  loc = log parseUri loc
   current_scope = 0
 
   match  = (expr) -> result.scopes[current_scope].matches.push expr
@@ -64,18 +64,15 @@ parseUri = (uri) ->
   result.toString = -> a.href
   result.requestUri = a.pathname + a.search
 
+  # Not standard
+  result.protocol = a.protocol.replace ':', ''
+
   # Default ports by protocol
   protocols =
     http: 80
     https: 443
     ftp: 21
-  if protocols[a.protocol.replace ':', ''] and not a.port
-    a.port = protocols[a.protocol]
-
-  log a.protocol
-  log a.port
-
-  # For JSON
-  result.toJSON = result.toString
+  if protocols[result.protocol] and not a.port
+    result.port = +protocols[result.protocol]
   
   result

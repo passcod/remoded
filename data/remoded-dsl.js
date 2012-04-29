@@ -15,7 +15,7 @@
         }
       ]
     };
-    loc = parseUri(loc);
+    loc = log(parseUri(loc));
     current_scope = 0;
     match = function(expr) {
       return result.scopes[current_scope].matches.push(expr);
@@ -80,17 +80,15 @@
       return a.href;
     };
     result.requestUri = a.pathname + a.search;
+    result.protocol = a.protocol.replace(':', '');
     protocols = {
       http: 80,
       https: 443,
       ftp: 21
     };
-    if (protocols[a.protocol.replace(':', '')] && !a.port) {
-      a.port = protocols[a.protocol];
+    if (protocols[result.protocol] && !a.port) {
+      result.port = +protocols[result.protocol];
     }
-    log(a.protocol);
-    log(a.port);
-    result.toJSON = result.toString;
     return result;
   };
 
