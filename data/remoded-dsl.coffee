@@ -16,10 +16,10 @@ window.Remoded = (manifest, loc) ->
   domain = (expr) -> scopes[current_scope].domains.push expr 
   port   = (expr) -> scopes[current_scope].ports.push expr
 
-  load = (files) ->
-    files = [files] if typeof files is 'string' or typeof files is 'number'
-    for file in files
-      scopes[current_scope].loads.push file
+  load = (files...) ->
+    files = files[0] if Array.isArray files[0]
+    files =  [files] if typeof files is 'string' or typeof files is 'number'
+    scopes[current_scope].loads.push files...
 
   scope = (call) ->
     # Elevate the scope before executing the contents...
@@ -43,7 +43,7 @@ window.Remoded = (manifest, loc) ->
 
   eval manifest
 
-  return log scopes
+  return log processScopes(scopes, loc)
 
 RegExp.prototype.toJSON = -> this.toString()
 Function.prototype.toJSON = -> this.toString()
@@ -75,3 +75,41 @@ parseUri = (uri) ->
     result.port = +protocols[result.protocol]
   
   result
+
+
+# Process the scopes object generated from the manifest
+# against the location provided and return instructions
+# for remoded.
+processScopes = (scopes, loc) ->
+  instructions =
+    load:  []
+    serve: []
+
+  for scope in scopes
+    pass = true
+    pass &&= loc.port in scope.ports
+    pass &&= !(false in (for domain in scope.domains
+      if typeof domain is 'string'
+        domain = domain.replace /(^\s+|\s+$)/g, ''
+        loc.hostname is domain
+      else if domain instanceof RegExp
+        domain.test loc.hostname
+      else
+        # If we don't recognize it, ignore it
+        true
+    ))
+    pass &&= !(false in (for match in scope.matches
+      if typeof match is 'string'
+        match = match.replace /(^\/?|\/?$)/g, ''
+        match is loc.pathname.replace(/(^\/?|\/?$)/g, '') + loc.search
+      else if match instanceof RegExp
+        match.test loc.requestUri
+      else
+        # If we don't recognize it, ignore it
+        true
+    ))
+
+    if pass
+      instructions.load.push scope.loads...
+
+  instructions
