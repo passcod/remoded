@@ -15,7 +15,7 @@
         children: []
       }
     ];
-    loc = log(parseUri(loc));
+    loc = parseUri(loc);
     current_scope = 0;
     match = function(expr) {
       return scopes[current_scope].matches.push(expr);
@@ -54,7 +54,7 @@
       return current_scope = scopes[current_scope].parent;
     };
     eval(manifest);
-    return log(processScopes(scopes, loc));
+    return processScopes(scopes, loc);
   };
 
   RegExp.prototype.toJSON = function() {
@@ -94,8 +94,7 @@
   processScopes = function(scopes, loc) {
     var domain, instructions, match, pass, scope, _i, _len, _ref, _ref1;
     instructions = {
-      load: [],
-      serve: []
+      load: []
     };
     for (_i = 0, _len = scopes.length; _i < _len; _i++) {
       scope = scopes[_i];
@@ -126,9 +125,9 @@
           match = _ref1[_j];
           if (typeof match === 'string') {
             match = match.replace(/(^\/?|\/?$)/g, '');
-            _results.push(match === loc.pathname.replace(/(^\/?|\/?$)/g, '') + loc.search);
+            _results.push(match === loc.pathname.replace(/(^\/?|\/?$)/g, '') + loc.search + loc.hash);
           } else if (match instanceof RegExp) {
-            _results.push(match.test(loc.requestUri));
+            _results.push(match.test(loc.requestUri + loc.hash));
           } else {
             _results.push(true);
           }
@@ -139,7 +138,11 @@
         (_ref1 = instructions.load).push.apply(_ref1, scope.loads);
       }
     }
-    return instructions;
+    if (instructions.load.length > 0) {
+      return instructions;
+    } else {
+      return false;
+    }
   };
 
 }).call(this);

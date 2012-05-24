@@ -9,7 +9,7 @@ window.Remoded = (manifest, loc) ->
     }]
 
   
-  loc = log parseUri loc
+  loc = parseUri loc
   current_scope = 0
 
   match  = (expr) -> scopes[current_scope].matches.push expr
@@ -43,7 +43,7 @@ window.Remoded = (manifest, loc) ->
 
   eval manifest
 
-  return log processScopes(scopes, loc)
+  return processScopes(scopes, loc)
 
 RegExp.prototype.toJSON = -> this.toString()
 Function.prototype.toJSON = -> this.toString()
@@ -83,7 +83,6 @@ parseUri = (uri) ->
 processScopes = (scopes, loc) ->
   instructions =
     load:  []
-    serve: []
 
   for scope in scopes
     pass = true
@@ -101,9 +100,9 @@ processScopes = (scopes, loc) ->
     pass &&= !(false in (for match in scope.matches
       if typeof match is 'string'
         match = match.replace /(^\/?|\/?$)/g, ''
-        match is loc.pathname.replace(/(^\/?|\/?$)/g, '') + loc.search
+        match is loc.pathname.replace(/(^\/?|\/?$)/g, '') + loc.search + loc.hash
       else if match instanceof RegExp
-        match.test loc.requestUri
+        match.test loc.requestUri + loc.hash
       else
         # If we don't recognize it, ignore it
         true
@@ -112,4 +111,7 @@ processScopes = (scopes, loc) ->
     if pass
       instructions.load.push scope.loads...
 
-  instructions
+  if instructions.load.length > 0
+    instructions
+  else
+    false
