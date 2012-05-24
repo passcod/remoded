@@ -7,8 +7,7 @@ _Userscripts, reloaded._
 Remoded was originaly conceived sometime before Christmas 2011, but it
 never really got beyond the idea stage. A little later, I had a look at
 [dotjs][0], bringing in a refreshing thought of simplicity over the initially
-complex thing I had in mind. Months passed, and finally I believe the
-gestation period is over. **Remoded** is yearning to be born.
+complex thing I had in mind. Months passed, and finally **remoded** was born.
 
 
 ## Userscripts are tricky beasts
@@ -70,6 +69,13 @@ load [
   "lib/underscore.string.js"
   "script.js"
 ]
+```
+
+Not only JavaScript, you can load in CSS, and arbitrary text files:
+
+```
+load "stylesheets/style.css"
+load "locale/jp_JP.yml"
 ```
 
 But what if we only want to run on a subset of pages?

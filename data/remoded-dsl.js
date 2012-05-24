@@ -99,7 +99,9 @@
     for (_i = 0, _len = scopes.length; _i < _len; _i++) {
       scope = scopes[_i];
       pass = true;
-      pass && (pass = (_ref = loc.port, __indexOf.call(scope.ports, _ref) >= 0));
+      if (scope.ports.length > 0) {
+        pass && (pass = (_ref = loc.port, __indexOf.call(scope.ports, _ref) >= 0));
+      }
       pass && (pass = !(__indexOf.call((function() {
         var _j, _len1, _ref1, _results;
         _ref1 = scope.domains;

@@ -86,7 +86,7 @@ processScopes = (scopes, loc) ->
 
   for scope in scopes
     pass = true
-    pass &&= loc.port in scope.ports
+    pass &&= loc.port in scope.ports if scope.ports.length > 0
     pass &&= !(false in (for domain in scope.domains
       if typeof domain is 'string'
         domain = domain.replace /(^\s+|\s+$)/g, ''
