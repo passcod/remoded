@@ -22,8 +22,8 @@
       <div id="header">
         <nav>
           <li class="fork"><a href="https://github.com/passcod/remoded">Fork On GitHub</a></li>
-          <li class="downloads"><a href="#">XPI</a></li>
-          <li class="downloads"><a href="#">AMO</a></li>
+          <li class="downloads"><a href="https://github.com/downloads/passcod/remoded/remoded.xpi">XPI</a></li>
+          <li class="downloads"><a href="https://addons.mozilla.org/firefox/addon/remoded/">AMO</a></li>
           <li class="title">VERSION I</li>
         </nav>
       </div><!-- end header -->
@@ -36,14 +36,13 @@
           <p>Userscripts, reloaded.</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/passcod">passcod</a></span>
-          <span class="credits right">Hosted on GitHub Pages — Theme by <a href="http://twitter.com/#%21/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages — Theme by <a href="http://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
         <p>Remoded was originally conceived sometime before Winter 2011, but it
 never really got beyond the idea stage. A little later, I had a look at
 <a href="http://defunkt.io/dotjs/">dotjs</a>, bringing in a refreshing thought of simplicity over the initially
-complex thing I had in mind. Months passed, and finally I believe the
-gestation period is over. <strong>Remoded</strong> is yearning to be born.</p>
+complex thing I had in mind. Months passed, and finally <strong>remoded</strong> was born.</p>
 
 <h2>Userscripts are tricky beasts</h2>
 
@@ -68,7 +67,7 @@ used to concatenating everything in one file for production, but the reason for
 <em>that</em> is about network latency — a problem that isn't one if all your
 files are local. Plus, requiring that all code be in one file means you can't
 use frameworks like <a href="http://jqueryui.com/">jQuery UI</a> or <a href="https://github.com/ibdknox/pinot">Pinot</a>, nor many different libraries
-or plugins, nor images, nor flash if that's your fancy, nor...</p>
+or plugins, nor images, nor flash if that's your fancy, nor appCache, nor...</p>
 
 <h2>Remoded brings freedom to this twisted plane</h2>
 
@@ -100,6 +99,12 @@ load [
 ]
 </code></pre>
 
+<p>Not only JavaScript, you can load in CSS, and arbitrary text files:</p>
+
+<pre><code>load "stylesheets/style.css"
+load "locale/jp_JP.yml"
+</code></pre>
+
 <p>But what if we only want to run on a subset of pages?</p>
 
 <pre><code>match "foo/bar"                 # Exact matching (+/- trailing slash)
@@ -111,9 +116,9 @@ domain "example.com"
 domain /^(b|a|z)\.example.+$/
 
 # Ports are thrown in for free
-port 8080, 4567
+port 8080
 port "1200..1234"   # Ranges! (Not implemented)
-port /^[1-9]+000$/
+port /^[1-9]+000$/  # Regexp! (Not implemented)
 </code></pre>
 
 <p>What about conditional loading? Well, there's better: scopes.</p>
