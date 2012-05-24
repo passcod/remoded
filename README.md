@@ -35,7 +35,7 @@ used to concatenating everything in one file for production, but the reason for
 _that_ is about network latency &mdash; a problem that isn't one if all your
 files are local. Plus, requiring that all code be in one file means you can't
 use frameworks like [jQuery UI][2] or [Pinot][3], nor many different libraries
-or plugins, nor images, nor flash if that's your fancy, nor...
+or plugins, nor images, nor flash if that's your fancy, nor appCache, nor...
 
 
 ## Remoded brings freedom to this twisted plane
@@ -84,9 +84,9 @@ domain "example.com"
 domain /^(b|a|z)\.example.+$/
 
 # Ports are thrown in for free
-port 8080, 4567
+port 8080
 port "1200..1234"   # Ranges! (Not implemented)
-port /^[1-9]+000$/
+port /^[1-9]+000$/  # Regexp! (Not implemented)
 ```
 
 What about conditional loading? Well, there's better: scopes.
@@ -104,7 +104,7 @@ variables, and the full power of the language to achieve exactly what
 you want.
 
 
-_More coming... stay tuned!_
+_Todo: implement all that "Not implemented" stuff |-;_
 
 
 remoded
