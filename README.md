@@ -116,6 +116,8 @@ _Todo: implement all that "Not implemented" stuff |-;_
 remoded
 =======
 
+[![Gittip](http://stuff.passcod.net/gittip.png)](https://www.gittip.com/passcod/)
+
 Copyright 2012 &copy; Félix Saparelli [:passcod]  
 Licensed under [MIT](http://passcod.mit-license.org).
 
