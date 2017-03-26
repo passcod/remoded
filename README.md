@@ -1,6 +1,8 @@
 remoded
 =======
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/passcod/remoded.svg)](https://greenkeeper.io/)
+
 _Userscripts, reloaded._
 
 
